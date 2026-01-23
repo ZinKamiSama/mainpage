@@ -1,0 +1,118 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Kami's Note</title>
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+    <link rel="manifest" href="favicons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="favicons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <div class="LoadCSS">
+        <link href="CSS/zetta.css" rel="stylesheet" type="text/css">
+    </div>
+    <script src="javascript.js"></script>
+</head>
+<body style="overflow: hidden;">
+    <!-- ******************* 메뉴 ******************* -->
+    <div class="navbar">
+            <a href="MainPage.html" onclick="changeUrl('?page=news')" target="MainScreen" class="menu-item active">News</a>
+            <a href="Document/지금해야하는일.html" onclick="changeUrl('?page=ourduty')" target="MainScreen" class="menu-item">Our Duty</a>
+            <div class="dropdown">
+                <button class="dropbtn">History</button>
+                <div class="dropdown-content">
+                    <a href="Document/변희재와조원진.html" onclick="changeUrl('?page=history001')" target="MainScreen" class="menu-item">변희재와 조원진</a>
+                    <a href="Document/김영삼과전두환.html" onclick="changeUrl('?page=history002')" target="MainScreen" class="menu-item">김영삼과 전두환</a>
+                    <a href="Document/CorruptMedia.html" onclick="changeUrl('?page=history003')" target="MainScreen" class="menu-item">국내언론들</a>
+                    <a href="#link" onclick="changeUrl('?page=history004')" target="" class="menu-item">추가중...</a>
+                </div>
+            </div>                    
+            <a href="Document/Vitamin%20C.html" onclick="changeUrl('?page=vitaminc')" target="MainScreen" class="menu-item">Health</a>
+            <a href="Document/Lachesis.html" onclick="changeUrl('?page=fatima')" target="MainScreen" class="menu-item">Program</a>
+            <div style="float:right;font-size:18px;color:white;padding-top:10px;vertical-align: middle;">
+                <img src="Img/YoonAgain.png" style="float:right;height:27px;bottom:15%;padding-left:10px;right:10px">
+                Kami's Note 
+            </div>
+            <img src="Img/vivi.png" width="27px" style="padding-top:10px;float:right;bottom:13%">
+    </div>
+    <!-- ******************* 아이프레임 ******************* -->
+    <iframe id="MainScreen" name="MainScreen" src="MainPage.html" width="100%" height="95%" style="border:1px solid black;"></iframe>
+    <script>
+    // 메뉴 클릭 시 active 클래스 토글
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+            menuItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    ////////////////////////////////////
+    // 현재 URL에서 쿼리 문자열을 가져옵니다.
+    const queryString = window.location.search;
+
+    // URLSearchParams 객체로 파싱
+    const params = new URLSearchParams(queryString);
+    const iframe = document.getElementById('MainScreen');
+    
+    if (params.has('page')) 
+    {
+        const page = params.get('page');
+        let targetSrc = '';
+        if (page === 'vitaminc') {
+            targetSrc = 'Document/Vitamin%20C.html';
+            iframe.src = targetSrc;
+        }
+        else if (page === 'ourduty') {
+            targetSrc = 'Document/지금해야하는일.html';
+            iframe.src = targetSrc;
+        }
+        else if (page === 'history001') {
+            targetSrc = 'Document/변희재와조원진.html';
+            iframe.src = targetSrc;
+        }
+        else if (page === 'history002') {
+            targetSrc = 'Document/김영삼과전두환.html';
+            iframe.src = targetSrc;
+        }
+        else if (page === 'history003') {
+            targetSrc = 'Document/CorruptMedia.html';
+            iframe.src = targetSrc;
+        }
+        else if (page === 'history004') {
+            targetSrc = 'Document/CorruptMedia.html';
+            iframe.src = targetSrc;
+        }
+        else if (page === 'fatima') {
+            targetSrc = 'Document/Lachesis.html';
+            iframe.src = targetSrc;
+        }
+        // 쿼리로 받은 페이지와 href가 일치하는 a.menu-item에 active 추가
+        if (targetSrc) {
+            menuItems.forEach(i => {
+                // href 속성의 공백, 인코딩 등 비교를 위해 decodeURIComponent 사용
+                if (decodeURIComponent(i.getAttribute('href')) === decodeURIComponent(targetSrc)) {
+                    i.classList.add('active');
+                } else {
+                    i.classList.remove('active');
+                }
+            });
+        }
+    }       
+    </script>
+ 
+</body>
+</html>
