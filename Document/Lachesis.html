@@ -1,0 +1,138 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>라키시스 V2</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1c2526;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            background: #2e2e2e;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #F5DEB3;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #4dabf7;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #4dabf7;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 90%;
+            color:white;
+        }
+        .download-section {
+            margin-top: 30px;
+        }
+        .download-button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 10px;
+            background-color: #4dabf7;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .download-button:hover {
+            background-color: #339af0;
+        }
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="../Img/Lachesis512.png" style="width: 128px;;border:1px solid silver" alt="TFSS의 라키시스 입니다">
+        <h1>라키시스V2 - Ver 1.02</h1>
+        <p style="text-align: left;">
+            라키시스는 더 파이브 스타 스토리 만화에 등장하는 파티마(인공생명체)입니다 <br>
+            파티마들은 기사(Knight)를 보좌하며, 주로 기사가 모터헤드(로봇)를 조종하는 일을 돕습니다 <br>
+            AHK(오토핫키)로 작성해서 컴파일 했으며 소스코드를 받아서 직접 고쳐쓰셔도 좋습니다
+            <list type="disc">
+                <ul style="text-align: left;font-size:90%; color: #d0d0d0;">
+                <li>마우스 휠에 가속을 붙여줌으로써 웹브라우징이 편리해 집니다</li>
+                <li>win + z를 누르면 볼륨조절 윈도우가 뜨는데 휠로 볼륨을 조절 할 수 있습니다</li>
+                <li>win + pause는 토글키로 잠시 휠스크롤이 일반 속도로 돌아갑니다</li>
+                <li>win + end는 이 보조프로그램을 종료합니다</li>
+            </ul>
+            </list>
+            
+        </p>
+        <div class="download-section">
+            <h3>Download</h3>
+            <a href="../Down/LachesisV2.exe" class="download-button">LachesisV2.EXE</a>
+            <a href="../Down/LachesisV2.ahk" class="download-button">LachesisV2.AHK</a>
+        </div>
+        <footer>
+            © 2025 라키시스V2 개발자 까미. 모든 권리 포기.
+        </footer>
+    </div>
+</body>
+</html>
